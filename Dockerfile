@@ -123,9 +123,6 @@ COPY --chown=nginx  nginx.conf /etc/nginx/nginx.conf
 COPY --chown=nginx  default.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx  *.html /usr/html/error/
 
-COPY --chown=nginx  startup.sh  /usr/local/bin/startup.sh
-RUN chmod +x /usr/local/bin/startup.sh
-
 USER nginx
 
 WORKDIR /usr/html/
@@ -134,4 +131,4 @@ EXPOSE 8080
 
 STOPSIGNAL SIGQUIT
 
-CMD /usr/local/bin/startup.sh && nginx -g 'daemon off;'
+CMD && nginx -g 'daemon off;'
