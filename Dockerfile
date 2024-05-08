@@ -1,11 +1,11 @@
-FROM alpine:3.16
+FROM alpine:3.19
 
 LABEL maintainer="https://github.com/Tjlastnumber"
-LABEL nginx="1.24.0"
+LABEL nginx="1.26.0"
 
-ENV NGINX_VERSION 1.24.0
+ENV NGINX_VERSION 1.26.0
 ENV PKG_RELEASE   1
-ENV NJS_VERSION   0.7.12
+ENV NJS_VERSION   0.8.4
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -123,6 +123,9 @@ COPY --chown=nginx  nginx.conf /etc/nginx/nginx.conf
 COPY --chown=nginx  default.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx  *.html /usr/html/error/
 
+COPY --chown=nginx  startup.sh  /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
+
 USER nginx
 
 WORKDIR /usr/html/
@@ -131,4 +134,4 @@ EXPOSE 8080
 
 STOPSIGNAL SIGQUIT
 
-CMD nginx -g 'daemon off;'
+CMD /usr/local/bin/startup.sh && nginx -g 'daemon off;'
